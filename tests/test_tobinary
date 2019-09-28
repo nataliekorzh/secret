@@ -1,0 +1,54 @@
+#!/bin/bash
+# Usage: ./test_frequency
+
+set -e
+
+test_dir=$(dirname "$0")
+. "${test_dir}/common.sh"
+cd "${test_dir}/.." || exit 1
+
+program=tobinary
+
+assert_eq '0'    '0'    '0b0'
+assert_eq '1'    '1'    '0b1'
+assert_eq '2'    '2'    '0b10'
+assert_eq '255'  '255'  '0b11111111'
+assert_eq '256'  '256'  '0b100000000'
+assert_eq '-1'   '-1'   '-0b1'
+assert_eq '-2'   '-2'   '-0b10'
+assert_eq '-255' '-255' '-0b11111111'
+assert_eq '-256' '-256' '-0b100000000'
+
+assert_eq '0x1'    '0x1'    '0b1'
+assert_eq '0x2'    '0x2'    '0b10'
+assert_eq '0xfF'   '0xfF'   '0b11111111'
+assert_eq '0x100'  '0x100'  '0b100000000'
+assert_eq '-0x1'   '-0x1'   '-0b1'
+assert_eq '-0x2'   '-0x2'   '-0b10'
+assert_eq '-0xFf'  '-0xFf'  '-0b11111111'
+assert_eq '-0x100' '-0x100' '-0b100000000'
+
+assert_eq '01'    '01'    '0b1'
+assert_eq '0377'  '0377'  '0b11111111'
+assert_eq '-0400' '-0400' '-0b100000000'
+
+assert_eq '-0b1' '0b1' '0b1'
+assert_eq '0b11010111' '0b11010111' '0b11010111'
+
+# These two only work on 64-bit machines.
+if [[ $(arch) = 'x86_64' ]]; then
+  assert_eq 'LONG_MAX' '9223372036854775807' '0b111111111111111111111111111111111111111111111111111111111111111'
+  assert_eq 'LONG_MIN' '-9223372036854775808' '-0b1000000000000000000000000000000000000000000000000000000000000000'
+fi
+
+assert_eq 'LONG_MAX+1' '9223372036854775808' 'INVALID'
+assert_eq 'LONG_MIN-1' '-9223372036854775809' 'INVALID'
+
+assert_eq '0x' '0x' 'INVALID'
+assert_eq '0b' '0b' 'INVALID'
+assert_eq '08' '08' 'INVALID'
+assert_eq '0x1G' '0x1G' 'INVALID'
+
+assert_eq 'Multiple inputs' '1 0x2 03' $'0b1\n0b10\n0b11'
+
+results

@@ -1,0 +1,18 @@
+#!/bin/bash
+# Usage: ./test_frequency
+
+set -e
+
+test_dir=$(dirname "$0")
+. "${test_dir}/common.sh"
+cd "${test_dir}/.." || exit 1
+
+program=frequency
+
+assert_contains 'output header' 'X' 'Character    Count    Frequency (%)' 
+assert_contains 'empty' '' 's                0            0.000'
+assert_contains 'h in Hello' 'Hello' 'h                1           20.000'
+assert_contains 'max frequency' 'CCCAaAbbb' 'Most frequent: a b c'
+assert_contains 'min frequency' 'abcdefghijklmnopqrstuvwx' 'Least frequent: y z'
+
+results

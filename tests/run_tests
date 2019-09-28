@@ -1,0 +1,23 @@
+#!/bin/bash
+# Usage: ./run_tests
+
+set -e
+
+dir=$(dirname "$0")
+exit_val=0
+
+for script in "${dir}"/test_*; do
+  if [[ -x "${script}" ]]; then
+    echo "Running ${script}"
+    if ! "${script}"; then
+      exit_val=1
+    fi
+  fi
+done
+
+if [[ ${exit_val} -eq 0 ]]; then
+  echo "All tests passed!"
+else
+  echo "Some tests failed!"
+fi
+exit ${exit_val}
