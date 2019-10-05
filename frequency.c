@@ -14,18 +14,18 @@ int main () {
 		}
 	}
 
-	int total = 0;
+	double total = 0;
 
 	for (int i = 0; i < 26; ++i) {
 		total += letters[i];
 	}
 
-	printf("Character \t Count \t Frequency (%%) \t");
+	printf("Character \t Count \t\t Frequency (%%) \n");
 
 	for(int i=0; i<26; i++){
 		int character = i + 'a';
 		int count = letters[i];
-		int freq = count / total;
-		printf("%c \t  %c \t %c", character, count, freq);
+		double freq = (count / total) * 100;
+		printf("%c \t\t  %d \t\t %f\n", character, count, freq);
 	}
 }
