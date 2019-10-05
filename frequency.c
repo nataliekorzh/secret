@@ -15,13 +15,13 @@ int main () {
 	}
 
 	double total = 0;
-
+	
 	for (int i = 0; i < 26; ++i) {
 		total += letters[i];
 	}
 
-	printf("Character \t Count \t\t Frequency (%%) \n");
-
+	printf("Character \t Count \t\t Frequency (%%) \n"); 
+	
 	for(int i=0; i<26; i++){
 		int character = i + 'a';
 		int count = letters[i];
