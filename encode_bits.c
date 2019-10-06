@@ -8,5 +8,4 @@ int main () {
 		print_bits(current);
 	}
 
-	printf("\n");
 }
