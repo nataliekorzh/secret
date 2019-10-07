@@ -8,6 +8,8 @@ int main() {
 			printf("%d", dec);
 		} else {
 			printf("INVALID");
+			return 0;
 		}
+		printf("\n");
 	}
 }

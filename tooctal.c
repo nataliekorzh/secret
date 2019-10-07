@@ -1,13 +1,17 @@
 #include "getnum.h"
 #include <stdio.h>
 #include <limits.h>
+#include <stdbool.h>
 
 int main() {
         while ((c = getchar()) != EOF) {
                 long octal = getnum();
+		int count = 0;
+		if (octal == 0 && count == 0 && validitycounter == 0) {
+			valid = true;
+		}
                 if (valid) {
                         int oct[1000];
-			int count = 0;
                         while (octal) {
                                 oct[count] = octal%8;
                                 octal/=8;
@@ -21,6 +25,9 @@ int main() {
                         }
                 } else {
                         printf("INVALID");
-                }
-        }
+                	return 0;
+		}
+        	printf("\n");
+	}
+
 }

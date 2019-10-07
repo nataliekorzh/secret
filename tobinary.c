@@ -7,9 +7,12 @@ int main() {
         while ((c = getchar()) != EOF) {
                 long bin = getnum();
 		bool one = false;
+		int count = 0;
+		if (bin == 0 && count == 0 && validitycounter == 0) {
+			valid = true;
+		}
                 if (valid) {
 			int binary[1000];
-			int count = 0;
 			while(bin) {
         			binary[count] = bin%2;
         			bin/=2;
@@ -27,8 +30,14 @@ int main() {
 					printf("%d", binary[i]);
 				}
 			}
-                } else {
-                        printf("INVALID");
-                }
-        }
-}
+                        if (one == false && count == 0)
+                        {
+                                printf("0");
+                        }
+                } else {
+                        printf("INVALID");
+                        return 0;
+      		}
+		printf("\n");
+	}
+}  

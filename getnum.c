@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <math.h>
+#include <limits.h>
 
 int c = 0;
 int number[100];
@@ -9,6 +10,26 @@ int counter = 0;
 bool valid = true;
 bool negative = false;
 bool at_eof = false;
+int validitycounter = 0;
+
+static bool in_range(int base, bool negative, long result, int next)
+{
+        if(negative) {
+                if (result >= (LONG_MIN + next) / 10) {
+                        return true;
+                } else {
+                        valid = false;
+                        return false;
+                }
+        } else {
+                if (result >= (LONG_MAX - next) / 10) {
+                        return true;
+                } else {
+                        valid = false;
+                        return false;
+                }
+        }
+}
 
 long binaryReader()
 {
@@ -31,6 +52,24 @@ long decimalReader() {
         }
 	return decimal;
 }
+
+//long decimalReader() {
+//        long long decimal = 0;
+//        for(int i = 0; i < counter; i++) {
+//                if(in_range(10, negative, decimal, number[i])){
+  //                      if(!negative){
+
+                                //printf("decimal = 10 * %d + %d \n", decimal, number[i]);
+//                                decimal = 10LL * decimal + number[i];
+  //                      }else{
+                                //printf("decimal = 10 * %d - %d \n", decimal, number[i]);
+    //                            decimal = 10LL * decimal - number[i];
+
+      //                  }
+        //        }
+      //  }
+//        return decimal;
+//}
 
 long octalReader() { 
 	long octal = 0;
@@ -62,11 +101,15 @@ long getnum(void) {
 		
 	if (c == '0') {
 		//if first character 0
+		validitycounter = 0;
 		c = getchar();
 		if(c == 'b') {
+			++validitycounter; // =2 if more
 			//first two char 0b = binary
 			c = getchar();
+			valid = false;
 			while (c == '0' || c == '1'){
+				valid = true;
 				number[counter] = (c-'0');
 				counter++;
 				c = getchar();
@@ -80,9 +123,12 @@ long getnum(void) {
 			}
 					
 		} else if (c == 'x') {
+			++validitycounter;
 			//first two char 0x = hex
 			c = getchar();
+			valid = false;
 			while (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' ||c == '6' || c == '7' || c == '8' ||  c == '9' || c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'A' || c == 'B' || c == 'C' || c == 'D' || c == 'E' || c == 'F'){
+				valid = true;
 				if(isdigit(c)){
 					number[counter] = c-'0';
 					counter++;
@@ -107,7 +153,10 @@ long getnum(void) {
 			}
 		} else {
 			//first char 0 = check if octal
+			valid = false;
+			++validitycounter;
 			while(c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' ||c == '6' || c == '7'){
+				valid = true;
 				number[counter] = c-'0';
 				counter++;
 				c = getchar();
@@ -123,7 +172,9 @@ long getnum(void) {
 	} else {
 		if (isdigit(c)) {
 			//first character is nonzero = decimal
+			valid = false;
 			while (isdigit(c)) {
+				valid = true;
 				number[counter] = (c-'0');
 				counter++;
 				c = getchar();
