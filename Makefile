@@ -17,7 +17,7 @@ encode_bits: encode_bits.c bits.o
 	$(CC) $(CFLAGS) -o encode_bits bits.o encode_bits.o
 
 decode_bits: decode_bits.c bits.o
-	$(CC) $(CFLAGS) -c decode_bits.o decode_bits.c
+	$(CC) $(CFLAGS) -c decode_bits.c
 	$(CC) $(CFLAGS) -o decode_bits bits.o decode_bits.o
 
 getnum.o: getnum.c
